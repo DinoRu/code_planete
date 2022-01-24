@@ -26,7 +26,7 @@ SECRET_KEY = config("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['192.99.246.6', '.planete.code']
+ALLOWED_HOSTS = ['192.99.246.6', 'planetecode.com']
 
 
 # Application definition
@@ -86,8 +86,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'Blog2',
-        'USER': 'Dino',
-        'PASSWORD': '',
+        'USER': 'dino',
+        'PASSWORD': 'admin123',
         'HOST': '',
         'PORT': 5432
     }
