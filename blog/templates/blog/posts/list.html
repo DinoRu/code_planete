@@ -1,0 +1,140 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+{% load blog_tags %}
+
+{% block content %}
+
+<!-- main -->
+<section id="main" class="hero py-5 d-flex align-items-center">
+    <div class="container-fluid">
+        <div class="row gy-4 align-items-center justify-content-center">
+            <a href="#">
+            <div id="carousel_id" class="col col-md-12 col-lg-12 text-white text-center">
+                <h1 class="fw-bold p-5" data-aos="fade-up" ata-aos-delay="400">Vous voulez devenir programmeur informatique ?</h1>
+                <div data-aos="fade-up" data-aos-delay="600">
+                     <a href="" class="btn btn-get-started px-5 py-2 text-uppercase d-inline-flex align-items-center justify-content-center align-self-center">
+                         <span class="p-4 align-self-center">Commencer ici</span>
+                         <i class="bi bi-arrow-right"></i>
+                     </a>
+                </div>
+            </div>
+            </a>
+        </div>
+    </div>
+</section>
+<!-- Section card -->
+<section id="pricing" class="pricing">
+    <div class="container-fluid" data-aos="fade-up">
+        <div class="row gy-4 gy-md-0  gy-lg-4 mt-1justify-content-center" data-aos="fade-left">
+            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4" data-aos="zoom-in" data-aos-delay="100">
+                <div class="card text-center box">
+                    <img src="{% static 'img/python.jpeg' %}" width="100%" height="200px" alt="card-1"/>
+                     <div class="card-footer py-2">
+                        <a href="" class="text-uppercase bg-transparent">Python basics</a>
+                     </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                <div class="card text-center box">
+                    <img src="{% static 'img/java.jpg' %}" width="100%" height="200px" alt="card-1"/>
+                    <div class="card-footer py-2">
+                        <a href="" class="text-uppercase p-4">Java basics</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                <div class="card text-center box">
+                    <img src="{% static 'img/android_1.jpeg' %}" width="100%" height="200px" alt="card-1"/>
+                     <div class="card-footer py-2">
+                        <a href="" class="text-uppercase">Android basics</a>
+                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Section posts -->
+<section class="bg-light py-5">
+    <div class="container-fluid">
+        <div class="row gy-4 mt-1">
+            <div class="col-12 col-md-12 col-lg-8 border-end border-3">
+                <p class="text-center text-uppercase text-white py-2 post-titre">recent posts</p>
+                {% if tag %}
+                    <h2>Posts tagged with "{{ tag.name }}"</h2>
+                {% endif %}
+                {% if category %}
+                    <h2>Category: {{ category.name }}</h2>
+                {% endif %}
+                {% for post in posts %}
+                <div class="row gy-4 gx-4 mt-4">
+                    <div class="col-12 col-md-12 col-lg-12">
+                        <div class="row gy-4 py-2">
+                            <div class="col-12 col-md-6 col-lg-6">
+                                <div class="card shadow-4">
+                                    <div class="card shadow">
+                                        <img src="{% if post.image %}{{ post.image.url }}{% endif %}" alt="img"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 col-lg-6">
+                                <h4>
+                                    <a href="{{ post.get_absolute_url }}" class="text-decoration-none text-dark">
+                                        {{ post.titre }}
+                                    </a>
+                                </h4>
+                                 <p class="text-muted fst-italic">
+                                     Tags:
+                                     {% for tag in post.tags.all %}
+                                        <a href="{% url 'blog:post_list_by_tag' tag.slug %}">
+                                            {{ tag.name }}
+                                        </a>
+                                        {% if not forloop.last %}, {% endif %}
+                                     {% endfor %}
+                                 </p>
+                                <p class="text-secondary">Publié le {{ post.publish }} par {{ post.author }}</p>
+                                <p>
+                                    {{ post.body|safe|truncatewords_html:25 }}
+                                </p>
+                                <a href="{{ post.get_absolute_url }}"><button type="button" class="btn btn-dark mx-auto d-block">Voir l'article</button></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                <hr/>
+                {% include "pagination.html" with page=posts %}
+            </div>
+            <div class="col-12 col-md-12 col-lg-4 ps-5">
+                <p class="text-center text-uppercase text-white py-2 post-titre">a propos de moi</p>
+                <div class="row gy-4 justify-content-md-center">
+                    <div class="col-12">
+                        <img src="{% static 'img/toph_1.png' %}" alt="photo de profil" class="rounded-circle mx-auto d-block" height="200px" width="200px"/>
+                    </div>
+                    <div class="col-12 col-md-12 mx-auto">
+                        <p>
+                            Salut, je suis Diarra Moustapha. Je suis diplomé en informatique et en ingeniérie passionné par
+                            la programmation et la technologie.
+                            Planète Python est l'endroit où je me passionne pour la programmation informatique.
+                            Sur ce blog, je partage tout ce que j'apprends sur la programmation au fur et à mesure.
+                        </p>
+                        <a href=""><button type="button" class="btn btn-dark mx-auto d-block">En savoir plus</button></a>
+                    </div>
+                    <div class="col-12 col-md-12 mx-auto d-block">
+                        <p class="text-center text-uppercase text-white py-2 post-titre">Informations legales</p>
+                        <div class="col">
+                            <p>
+                                Planète Code est l'endroit où vous apprenez des compétences techniques et des compétences génerales pour devenir un meilleur programmeur.
+                                Ce site appartient et est exploité par Diarra Moustapha.
+                            </p>
+                        </div>
+                    </div>
+                    <hr>
+                </div>
+            </div>
+        </div>
+
+        </div>
+    </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,69 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+{% load blog_tags %}
+
+{% block content %}
+<section class="bg-light py-5">
+    <div class="container-fluid">
+        <div class="row gy-4 mt-1">
+            <div class="col-12 col-md-12 col-lg-8 border-end border-3 border-bottom">
+                {% if query %}
+                    <h1 class="text-dark text-capitalize">Articles contenant: {{ query }}</h1>
+
+                    {% for post in results %}
+                        <h3><a href="{{ post.get_absolute_url}}" class="text-center text-capitalize text-decoration-underline my-4 mx-auto d-block">{{ post.titre }}</a></h3>
+                        <p class="text-secondary text-center mx-auto d-block">Publié le {{ post.publish }} par <a href="{% url 'blog:about' %}" class="text-decoration-underline">{{ post.author }}</a></p>
+                        <a href="{{post.get_absolute_url}}"><img src="{% if post.image%}{{post.image.url}}{% endif %}" alt="img" width="600" height="400" class="my-4 mx-auto d-block"></a>
+                        {{post.body|safe|truncatewords_html:25}}
+                        <p>Post in <a href="{% url 'blog:post_list_by_category' post.category.slug %}" class="text-decoration-underline fst-italic">{{ post.category }}
+                        </a> -Tagged {% for tag in post.tags.all %}<a href="{% url 'blog:post_list_by_tag' tag.slug%}" class="text-decoration-underline fst-italic">
+                            {{ tag.name }} </a>{% if not forloop.last%}, {% endif %}{% endfor %}</p>
+                        <hr/>
+                    {% empty %}
+                        <p>Désolé, Nous n'avons pas trouvé de posts contenant:<strong>{{query}}</strong>.</p>
+                    {% endfor %}
+                    <p><a href="{% url 'blog:post_search' %}" class="btn btn-primary">Search again</a>
+                {% else %}
+                    <h1>Search for posts</h1>
+                    <form method="get">
+                        {{ form.as_p }}
+                        <input type="submit" name="" value="Search">
+                    </form>
+                {% endif %}
+                {% include "pagination.html" with page=posts %}
+            </div>
+            <div class="col-12 col-md-12 col-lg-4">
+                <p class="text-center text-uppercase text-white py-2 post-titre">a propos de moi</p>
+                <div class="row gy-4 justify-content-md-center">
+                    <div class="col-12">
+                        <img src="{% static 'img/toph_1.png' %}" alt="photo de profil" class="rounded-circle mx-auto d-block" height="200px" width="200px"/>
+                    </div>
+                    <div class="col-12 col-md-12 mx-auto">
+                        <p>
+                            Salut, je suis Diarra Moustapha. Je suis diplomé en informatique et en ingeniérie passionné par
+                            la programmation et la technologie.
+                            Planète Python est l'endroit où je me passionne pour la programmation informatique.
+                            Sur ce blog, je partage tout ce que j'apprends sur la programmation au fur et à mesure.
+                        </p>
+                        <a href=""><button type="button" class="btn btn-dark mx-auto d-block">En savoir plus</button></a>
+                    </div>
+                    <div class="col-12 col-md-12 mx-auto d-block">
+                        <p class="text-center text-uppercase text-white py-2 post-titre">Informations legales</p>
+                        <div class="col p-4">
+                            <p>
+                                Planète Code est l'endroit où vous apprenez des compétences techniques et des compétences génerales pour devenir un meilleur programmeur.
+                                Ce site appartient et est exploité par Diarra Moustapha.
+                            </p>
+                        </div>
+                    </div>
+                    <hr>
+                </div>
+            </div>
+        </div>
+
+
+        </div>
+    </div>
+</section>
+
+{% endblock %}

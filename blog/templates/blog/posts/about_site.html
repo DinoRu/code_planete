@@ -1,0 +1,76 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="bg-light py-5 about">
+    <div class="container-fluid">
+        <div class="row gy-4 mt-1">
+            <div class="col-12 col-md-12 col-lg-8 border-end ">
+                <h1 class="text-center mb-3 fw-bold">À propos de Planète Code</h1>
+                <img src="{% static 'img/neuron.jpeg' %}" class="mx-auto d-block" height="25%" width="100%" alt="title">
+                <h1 class="text_img text-center text-white fw-bold fs-1 text-uppercase">Planete Code</h1>
+                <p class="mt-3">
+                    Tout a commencé par mon avis de partager mes connaissances aux autres et de motiver des personnes.
+                    Vu qu'il n'y avait pas trop de blog en français, je décide de créer Planète Code et de payer un
+                    hébergement.
+                </p>
+                <p>
+                    Bientot, j'ai commencé à rassembler plusieurs tutoriels et articles sur Python, le
+                    développement Web, la science des données et d'autres langages de programmation. J'ai passé
+                    beaucoup de nuits et de matinées à faire de ce site Web une excellente ressource pour tous les
+                    développeurs.
+                </p>
+                <p>
+                    Chaque fois que j'apprends des trucs sympas liés à la programmation, je les partage sur ce site.
+                    J'essaie de simplifier les concepts techniques difficiles et de donner des conseils et des informations
+                    utiles bases sur mon experience en codage.
+                    Mon objectif est d'aider d'autres personnes dans leurs quêtes pour devenir de meilleurs programmateurs.
+                </p>
+                <p>
+                    J'ai commencé mon apprentissage Python avec le livre de Gerard Swinnen "Apprendre Python" et
+                    suivre des tutoriels sur internet. Mais je lis beaucoup et j'apprends très vite donc j'ai vite cerné les concepts. J'ai appris
+                    python à fond. Je ne sais pas pourquoi, mais j'aime beaucoup plus coder en python et Java que les
+                    autres langages.
+                </p>
+                <p>
+                    Grandissons ensemble et faisons de ce monde un meilleur endroit avec le code que nous
+                    écrivons.
+                </p>
+                <p>
+                    Vous pouvez aussi me trouver sur <a href="https://github.com/DinoRu">Github</a>, qui n'est pas
+                    très actif ces jours-ci.
+                </p>
+            </div>
+            <div class="col-12 col-md-12 col-lg-4 ps-5">
+                <p class="text-center text-uppercase text-white py-2 post-titre">a propos de moi</p>
+                <div class="row gy-4 justify-content-md-center">
+                    <div class="col-12">
+                        <img src="{% static 'img/toph_1.png' %}" alt="photo de profil" class="rounded-circle mx-auto d-block" height="200px" width="200px"/>
+                    </div>
+                    <div class="col-12 col-md-12 mx-auto">
+                        <p>
+                            Salut, je suis Diarra Moustapha. Je suis diplomé en informatique et en ingeniérie passionné par
+                            la programmation et la technologie.
+                            Planète Python est l'endroit où je me passionne pour la programmation informatique.
+                            Sur ce blog, je partage tout ce que j'apprends sur la programmation au fur et à mesure.
+                        </p>
+                        <a href=""><button type="button" class="btn btn-dark mx-auto d-block">En savoir plus</button></a>
+                    </div>
+                    <div class="col-12 col-md-12 mx-auto d-block">
+                        <p class="text-center text-uppercase text-white py-2 post-titre">Informations legales</p>
+                        <div class="col p-4">
+                            <p>
+                                Planète Code est l'endroit où vous apprenez des compétences techniques et des compétences génerales pour devenir un meilleur programmeur.
+                                Ce site appartient et est exploité par Diarra Moustapha.
+                            </p>
+                        </div>
+                    </div>
+                    <hr>
+                </div>
+            </div>
+        </div>
+
+        </div>
+    </div>
+</section>
+{% endblock %}

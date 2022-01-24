@@ -1,0 +1,124 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+{% load blog_tags %}
+
+
+{% block content %}
+
+
+
+<!-- Section posts -->
+<section class="py-5">
+    <div class="container-fluid">
+        <div class="row gy-4 mt-md-0 mt-5">
+            <div class="col-12 col-md-12 col-lg-8 border-end border-warning border-3">
+                <h2 class="text-center">{{post.titre}}</h2>
+                <p class="text-secondary text-center">Publié le {{ post.publish }} par {{ post.author }}</p>
+                <img src="{% if post.image %}{{ post.image.url }}{% endif %}" class="mx-auto d-block" height="260px" width="100%">
+
+                <p>
+                    {{ post.body|safe }}
+                    {{ post.description|safe }}
+                </p>
+                <hr/>
+                <div class="row mt-4 g-3 justify-content-center">
+                    <div class="col col-md-3 col-lg-3">
+                       <img src="{% static 'img/toph_4.png' %}" class="rounded-circle bg-secondary mx-auto d-block" alt="img" height="140px" width="140px">
+                    </div>
+                    <div class="col-12 col-md-9 col-lg-9 ps-4">
+                        <h3 class="text-dark fw-bold fs-2 text-center text-md-start text-lg-start">Diarra Moustapha</h3>
+                        <p>
+                            Je suis le visage derrière Planète Code. J'ai appris mon premier langage de programmation en 2018.
+                            Depuis, j'apprends la programmation et je me plonge dans la technologie.
+                            Sur ce site, je partage tout ce que j'ai appris sur la programmation informatique.
+                        </p>
+                    </div>
+                </div>
+                <hr/>
+                <p>
+                    <a href="{%  url 'blog:post_share' post.id %}" class="btn btn-primary">Partager cet article</a>
+                </p>
+                {% with comments.count as total_comments %}
+                    <h2>
+                        {{ total_comments }} comment {{ total_comments|pluralize }}
+                    </h2>
+                {% endwith %}
+                {% for comment in comments %}
+                <div>
+                    <p>
+                        Comment {{ forloop.counter }} by {{ comment.name }}
+                        {{ comment.created }}
+                    </p>
+                    {{ comment.body|safe }}
+                </div>
+                {% empty %}
+                    <p>Vous n'avez aucun commentaire encore.</p>
+                {% endfor %}
+                {% if new_comment %}
+                    <p>Ton commentaire a ete envoye avec success.</p>
+                {% else %}
+                    <h2 class="mt-5">Ecrire un commentaire.</h2>
+                    <form method="post" class="row gy-4">
+                        <div class="col-md-6">{{ comment_form.name }}</div>
+                        <div class="col-md-6">{{ comment_form.email }}</div>
+                        <div class="col-md-12">{{ comment_form.body }}</div>
+                        {% csrf_token %}
+                        <p>
+                            <input type="submit" value="Envoyer">
+                        </p>
+                    </form>
+                {% endif %}
+                <div class="row gy-4">
+                    <h2>Posts similaires</h2>
+                    {% for post in similar_posts %}
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+                            <img src="{% if post.image %}{{ post.image.url }}{% endif %} " class="w-100 mt-sm-4" alt="..."/>
+                            <p class="mt-4 text-center">
+                                <a href="{{ post.get_absolute_url }}" class="text-decoration-none fw-bolder fs-5 text-dark">{{ post.titre }}</a>
+                            </p>
+                            <p>
+                                {{ post.body|markdown|truncatewords_html:25 }}
+                            </p>
+                            <a href="{{ post.get_absolute_url }}" class="text-decoration-none text-center mx-auto d-block mb-sm-4">Continue...</a>
+                        </div>
+                    {% empty %}
+                        <p>Il n'y a pas de posts similar.</p>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-12 col-md-12 col-lg-4 ps-5">
+                <p class="text-center text-uppercase text-white py-2 post-titre">À propos de moi</p>
+                <div class="row gy-4 justify-content-md-center">
+                    <div class="col-12 justify-content-md-center">
+                        <img src="{% static 'img/toph_1.png' %}" alt="photo de profil" class="rounded-circle mx-auto d-block" height="200px" width="200px"/>
+                    </div>
+                    <div class="col-12 col-md-12 mx-auto">
+                        <p>
+                            Salut, je suis Diarra Moustapha. Je suis diplomé en informatique et en ingeniérie passionné par
+                            la programmation et la technologie.
+                            Planète Python est l'endroit où je me passionne pour la programmation informatique.
+                            Sur ce blog, je partage tout ce que j'apprends sur la programmation au fur et à mesure.
+                        </p>
+                        <a href=""><button type="button" class="btn btn-dark mx-auto d-block">En savoir plus</button></a>
+                        <hr>
+                    </div>
+                    <div class="col-12 col-md-12 mx-auto d-block mt-4">
+                        <p class="text-center text-uppercase text-white py-2 post-titre">Informations legales</p>
+                        <div class="col">
+                            <p>
+                                Planète Code est l'endroit où vous apprenez des competences techniques et des competences generales pou devenir un meilleur programmeur.
+                                Ce site appartient et exploite par Diarra Moustapha.
+                            </p>
+                            <hr>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        </div>
+    </div>
+</section>
+
+{% endblock %}

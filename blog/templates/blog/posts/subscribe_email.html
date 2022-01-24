@@ -1,0 +1,31 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+ <section id="form" class="bg-light">
+     <div class="row p-5 mt-5 justify-content-center">
+         <div class="col-12">
+             {% if send %}
+             <h4 class="border-bottom">You successfully susbscribe .</h4>
+             <p>
+                 you was successfully subscribe to your newsletters.
+             </p>
+             {% else %}
+             <h4 class="border-bottom text-dark">
+                 subscribe by e-mail
+             </h4>
+             <form method="post" class="row">
+                 {% for field in form %}
+
+                     {{ field.errors }}
+                     {{ field.label_tag }} {{ field }}
+
+                 {% endfor %}
+                 <input type="submit" value="Send e-mail" class="text-center mt-4">
+                 {% csrf_token %}
+             </form>
+             {% endif %}
+         </div>
+     </div>
+ </section>
+
+{% endblock %}
