@@ -1,11 +1,9 @@
 {% extends 'blog/base.html' %}
 {% load static %}
 {% load blog_tags %}
-
+{% load crispy_forms_tags %}
 
 {% block content %}
-
-
 
 <!-- Section posts -->
 <section class="py-5">
@@ -13,12 +11,12 @@
         <div class="row gy-4 mt-md-0 mt-5">
             <div class="col-12 col-md-12 col-lg-8 border-end border-warning border-3">
                 <h2 class="text-center">{{post.titre}}</h2>
-                <p class="text-secondary text-center">Publié le {{ post.publish }} par {{ post.author }}</p>
+                <p class="text-secondary text-center">Publié le {{ post.publish.date }} par {{ post.author }}</p>
                 <img src="{% if post.image %}{{ post.image.url }}{% endif %}" class="mx-auto d-block" height="260px" width="100%">
 
                 <p>
                     {{ post.body|safe }}
-                    {{ post.description|safe }}
+    
                 </p>
                 <hr/>
                 <div class="row mt-4 g-3 justify-content-center">
@@ -40,48 +38,46 @@
                 </p>
                 {% with comments.count as total_comments %}
                     <h2>
-                        {{ total_comments }} comment {{ total_comments|pluralize }}
+                        {{ total_comments }} comment{{ total_comments|pluralize }}
                     </h2>
                 {% endwith %}
-                {% for comment in comments %}
-                <div>
-                    <p>
-                        Comment {{ forloop.counter }} by {{ comment.name }}
-                        {{ comment.created }}
-                    </p>
-                    {{ comment.body|safe }}
-                </div>
-                {% empty %}
-                    <p>Vous n'avez aucun commentaire encore.</p>
-                {% endfor %}
-                {% if new_comment %}
-                    <p>Ton commentaire a ete envoye avec success.</p>
+                {% if not post.comments.all %}
+                    No comments yet
+                
                 {% else %}
-                    <h2 class="mt-5">Ecrire un commentaire.</h2>
-                    <form method="post" class="row gy-4">
-                        <div class="col-md-6">{{ comment_form.name }}</div>
-                        <div class="col-md-6">{{ comment_form.email }}</div>
-                        <div class="col-md-12">{{ comment_form.body }}</div>
-                        {% csrf_token %}
-                        <p>
-                            <input type="submit" value="Envoyer">
-                        </p>
-                    </form>
+                    {% for comment in post.get_comments %}
+                        {% include 'blog/posts/comment.html' with comment=comment %}
+                    {% endfor %}
                 {% endif %}
-                <div class="row gy-4">
-                    <h2>Posts similaires</h2>
+                <br/>
+                <hr />
+                <h3 class="text-center">Laisser un commentaire</h3>
+                <form method="POST" action="" class="row form-group mt-3">
+                    {% csrf_token %}
+                    <div class="col-6">
+                        {{ comment_form.name }}
+                    </div>
+                    <div class="col-6">{{ comment_form.email }}</div>
+                    <div class="col-12 mt-2">{{ comment_form.body }}</div>
+                    <a><button type="submit" class="btn btn-secondary mt-2">Comment</button></a>
+                </form>
+                <div class="row gy-4 mt-4">
+                    <h2>Posts similaires : </h2>
                     {% for post in similar_posts %}
+
                         <div class="col-12 col-sm-12 col-md-6 col-lg-6">
                             <img src="{% if post.image %}{{ post.image.url }}{% endif %} " class="w-100 mt-sm-4" alt="..."/>
                             <p class="mt-4 text-center">
                                 <a href="{{ post.get_absolute_url }}" class="text-decoration-none fw-bolder fs-5 text-dark">{{ post.titre }}</a>
                             </p>
                             <p>
-                                {{ post.body|markdown|truncatewords_html:25 }}
+                                {{ post.body|safe|truncatewords_html:25 }}
                             </p>
-                            <a href="{{ post.get_absolute_url }}" class="text-decoration-none text-center mx-auto d-block mb-sm-4">Continue...</a>
+                            <p class="text-center"><a href="{{ post.get_absolute_url }}" class="btn btn-secondary text-decoration-none text-center text-uppercase mb-sm-4">Continue...</a></p>
                         </div>
+
                     {% empty %}
+
                         <p>Il n'y a pas de posts similar.</p>
                     {% endfor %}
                 </div>

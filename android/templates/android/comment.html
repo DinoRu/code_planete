@@ -1,0 +1,30 @@
+{% load crispy_forms_tags %}
+<div class="border-0 border-start border-2 border-info ps-2" id="{{comment.id}}">
+    <div class="mt-3">
+        <strong>{{comment.author}}</strong> 
+        {% if  comment.parent.author%} to <strong>{{comment.parent.author}}</strong>{% endif %}
+        <small class="text-muted">On {{ comment.created.date }}</small>
+    </div>
+    <div class="border p-2 rounded">
+        <p>{{ comment.body|safe }}</p>
+        <button class="btn btn-primary btn-sm" onclick="handleReply({{comment.id}})">Reply</button>
+    
+        <div id="reply-form-container-{{comment.id}}" style="display:none">
+        
+            <form method="POST" action="{% url 'android:reply' %}" class="mt-3">
+                {% csrf_token %}
+                <input type="hidden" name="article_id" value="{{article.id}}">
+                <input type="hidden" name="parent" value="{{comment.id}}">
+                <input type="hidden" name="article_url" value="{{ article.get_absolute_url }}">
+                {{comment_form|crispy }}
+                <div class="mt-2">
+                    <button type="button" onclick="handleCancel({{comment.id}})" class="btn btn-light border btn-sm">Cancel</button>
+                    <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    {% for comment in comment.get_comments %}
+        {% include 'android/comment.html' with comment=comment %}
+    {% endfor %}
+</div>
