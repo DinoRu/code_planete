@@ -1,6 +1,6 @@
 import os.path
-
-from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank, TrigramSimilarity
+import datetime
+from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
 from django.core.mail import send_mail
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import Count, Q
@@ -11,17 +11,11 @@ from django.views.generic import ListView
 from blog.forms import EmailPostForm, CommentForm, SearchForm, SubscribeForm
 from blog.models import Post, Comment, Category, Book
 from taggit.models import Tag
-
-"""
-class PostListView(ListView):
-    queryset = Post.published.all()
-    context_object_name = 'posts'
-    paginate_by = 6
-    template_name = 'blog/posts/list.html'
-"""
+from blog.documents import PostDocument, CategoryDocument
 
 
 def post_list(request, tag_slug=None, category_slug=None):
+    now = datetime.datetime.now
     object_list = Post.published.all()
     tag = None
     category = None
@@ -49,11 +43,13 @@ def post_list(request, tag_slug=None, category_slug=None):
         'tag': tag,
         'category': category,
         'categories': categories,
+        'now': now,
     }
     return render(request, 'blog/posts/list.html', context=context)
 
 
 def post_list_by_category(request, category_slug=None, tag_slug=None):
+    now = datetime.datetime.now
     object_list = Post.published.all()
     categories = Category.objects.all()
     category = None
@@ -82,6 +78,7 @@ def post_list_by_category(request, category_slug=None, tag_slug=None):
         'page': page,
         'tag': tag,
         'author': author,
+        'now': now,
     }
     return render(request, 'blog/posts/post_list_category.html', context=context)
 
@@ -90,19 +87,16 @@ def post_detail(request, year, month, day, post):
     post = get_object_or_404(Post, slug=post,
                              status='published', publish__year=year,
                              publish__month=month, publish__day=day)
-    # List of active comments for this post
-    comments = post.comments.filter(active=True)
     categories = Category.objects.all()
+    comments = post.comments.filter(active=True)
     new_comment = None
-    if request.method == "POST":
-        # A comment was posted
+    if request.method == 'POST':
         comment_form = CommentForm(data=request.POST)
-        if comment_form.is_valid:
+        if comment_form.is_valid():
             new_comment = comment_form.save(commit=False)
-            # Create Comment object but don't save to database yet
             new_comment.post = post
-            # Save the comment to the database
             new_comment.save()
+            return redirect(post.get_absolute_url()+'#'+str(new_comment.id))
     else:
         comment_form = CommentForm()
     post_tags_ids = post.tags.values_list('id', flat=True)
@@ -111,12 +105,27 @@ def post_detail(request, year, month, day, post):
     context = {
         'post': post,
         'comments': comments,
-        'new_comment': new_comment,
         'comment_form': comment_form,
         'similar_posts': similar_posts,
         'categories': categories,
     }
     return render(request, 'blog/posts/detail.html', context=context)
+
+
+def reply(request):
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            post_id = request.POST.get('post_id')
+            parent_id = request.POST.get('parent')
+            post_url = request.POST.get('post_url')
+
+            reply = form.save(commit=False)
+            reply.post = Post(id=post_id)
+            reply.parent = Comment(id=parent_id)
+            reply.save()
+            return redirect(post_url+'#'+str(reply.id))
+    return redirect('/')
 
 
 def post_share(request, post_id):
@@ -154,7 +163,7 @@ def post_search(request, tag_slug=None):
     categories = Category.objects.all()
     object_list = Post.published.all()
     form = SearchForm()
-    query = None
+    query = request.GET.get('query')
     tag = None
     results = []
     paginator = Paginator(object_list, 6)
@@ -169,15 +178,11 @@ def post_search(request, tag_slug=None):
         tag = get_object_or_404(Tag, slug=tag_slug)
         object_list = object_list.filter(tags__in=[tag])
 
-    if 'query' in request.GET:
+    if query:
         form = SearchForm(request.GET)
         if form.is_valid():
             query = form.cleaned_data['query']
-            search_vector = SearchVector('titre', 'body')
-            search_query = SearchQuery(query)
-            results = Post.published.annotate(
-                similarity=TrigramSimilarity('titre', query)
-            ).filter(similarity__gt=0.1).order_by('-similarity')
+            results = Post.published.filter(Q(titre__icontains=query) | Q(body__icontains=query))
     context = {
         'form': form,
         'query': query,
@@ -208,8 +213,15 @@ def about_site(request):
 
 
 class BookListView(ListView):
+    
     model = Book
     template_name = 'blog/posts/book_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        categories = Category.objects.all()
+        context['categories'] = categories
+        return context
 
 
 def download_idea_picture(request, pk):
@@ -233,14 +245,15 @@ def download_idea_picture(request, pk):
 
 
 def subscribe(request):
-    form = SubscribeForm()
-    send = False
+    my_form = SubscribeForm()
     if request.method == 'POST':
-        form = SubscribeForm(request.POST)
-        if form.is_valid():
-            form = form.cleaned_data['email']
-            send_mail('Subject subscribed', 'successuful suscribe', '{form}',  ['diarra.msa1@gmail.com'],)
-            send = True
+        my_form = SubscribeForm(data=request.POST or None)
+        if my_form.is_valid():
+            cd = my_form.cleaned_data
+            my_form.save()
+            return redirect('blog:book_list')
+        else:
+            my_form = SubscribeForm()
     else:
-        form = SubscribeForm()
-    return render(request, 'blog/posts/subscribe_email.html', {'form': form, 'send': send})
+        my_form = SubscribeForm()
+    return render(request, 'blog/posts/subscribe_email.html', {'my_form': my_form})

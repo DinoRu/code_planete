@@ -1,12 +1,14 @@
 /*--------------------------------------------------------
 # General
 ---------------------------------------------------------*/
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Gugi&family=Open+Sans:wght@300&display=swap');
 :root {
   scroll-behavior: smooth;
 }
 
 body {
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   color: #444444;
 }
 
@@ -48,9 +50,8 @@ section {
     background-size: cover;
 }
 
-.hero h1 {
+.hero h2 {
     margin: 0;
-    font-size: 48px;
     font-weight: 700;
     color: white;
 }
@@ -59,7 +60,7 @@ section {
     margin-top: 30px;
     line-height: 0;
     padding: 15px 40px;
-    border-raduis: 4px;
+    border-radius: 4px;
     transition: 0.5s;
     color: #fff;
     background: #000;
@@ -210,6 +211,7 @@ section {
   display: inline-block;
   line-height: 1;
 }
+
 .footer .footer-top .footer-links ul a:hover {
   color: #4154f1;
 }
@@ -228,41 +230,18 @@ section {
   color: #fff;
 }
 
-.pricing .box {
-  transform:
-    scale(0.75)
-    rotateY(-30deg)
-    rotateX(45deg)
-    translateZ(4.5rem);
-  transform-origin: 50% 100%;
-  transform-style: preserve-3d;
-  box-shadow: 1rem 1rem 2rem rgba(0,0,0,0.25);
-  transition: 0.6s ease transform;
-}
-
-.pricing .box:hover {
-    transform: scale(1);
-}
-
-.pricing .box::before {
-    transform: translateZ(4rem);
-}
-
-.pricing .box::before:hover {
-    transform: translateZ(0);
-}
-
-.pricing .box::after {
-    transform: translateZ(-4rem);
-}
-
-.pricing .box::after:hover {
-     transform: translateZ(-1px);
-}
 
 .about .text_img {
     position: absolute;
     top:50%;
     left: 35%;
     transform: translate(-50%, -50%);
+}
+
+.box {
+    cursor: pointer;
+}
+
+.pagination a {
+  margin: 0 4px;
 }

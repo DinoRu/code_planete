@@ -1,8 +1,7 @@
 from ckeditor.widgets import CKEditorWidget
 from django import forms
 
-from blog.models import Comment
-from ckeditor_uploader.widgets import CKEditorUploadingWidget
+from blog.models import Comment, Subscribe
 
 
 class EmailPostForm(forms.Form):
@@ -19,9 +18,9 @@ class CommentForm(forms.ModelForm):
         model = Comment
         fields = ('name', 'email', 'body')
         widgets = {
-            'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Votre nom'}),
-            'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Votre email'}),
-            'body': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Votre Text ici svp..'})
+            'name':forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Votre nom'}),
+            'email':forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Votre email'}),
+            'body':forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Commentaire ...'}),
         }
 
 
@@ -29,7 +28,9 @@ class SearchForm(forms.Form):
     query = forms.CharField()
 
 
-class SubscribeForm(forms.Form):
-    email = forms.EmailField(max_length=200)
+class SubscribeForm(forms.ModelForm):
+    class Meta:
+        model = Subscribe
+        fields = '__all__'
 
 

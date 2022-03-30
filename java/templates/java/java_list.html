@@ -1,0 +1,86 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+{% load blog_tags %}
+
+{% block content %}
+
+<!-- Section posts -->
+<section class="bg-light py-5">
+    <div class="container-fluid">
+        <div class="row gy-4 mt-1">
+            <div class="col-12 col-md-12 col-lg-8 border-end border-3">
+                <p class="text-center text-uppercase text-white py-2 post-titre">Les bases de Java</p>
+                {% for article in posts %}
+                <div class="row gy-4 gx-4 mt-4">
+                    <div class="col-12 col-md-12 col-lg-12">
+                        <div class="row gy-4 py-2">
+                            <div class="col-12 col-md-6 col-lg-6">
+                                <div class="card shadow-4">
+                                    <div class="card shadow">
+                                        <img src="{% if article.image %}{{ article.image.url }}{% endif %}" alt="img"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 col-lg-6">
+                                <h4>
+                                    <a href="{{ article.get_absolute_url }}" class="text-decoration-none text-dark">
+                                        {{ article.titre }}
+                                    </a>
+                                </h4>
+                                 <p class="text-muted fst-italic">
+                                     Tags:
+                                     {% for tag in article.tags.all %}
+                                        <a href="{% url 'blog:post_list_by_tag' tag.slug %}">
+                                            {{ tag.name }}
+                                        </a>
+                                        {% if not forloop.last %}, {% endif %}
+                                     {% endfor %}
+                                 </p>
+                                <p class="text-secondary">Publié le {{ article.publish.date }} par {{ article.author }}</p>
+                                <p>
+                                    {{ article.body|safe|truncatewords_html:25 }}
+                                </p>
+                                <a href="{{ article.get_absolute_url }}"><button type="button" class="btn btn-dark mx-auto d-block">Voir l'article</button></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                <hr/>
+                {% include 'java/pagination.html' with page=posts %}
+                
+            </div>
+            <div class="col-12 col-md-12 col-lg-4 ps-5">
+                <p class="text-center text-uppercase text-white py-2 post-titre">a propos de moi</p>
+                <div class="row gy-4 justify-content-md-center">
+                    <div class="col-12">
+                        <img src="{% static 'img/toph_1.png' %}" alt="photo de profil" class="rounded-circle mx-auto d-block" height="200px" width="200px"/>
+                    </div>
+                    <div class="col-12 col-md-12 mx-auto">
+                        <p>
+                            Salut, je suis Diarra Moustapha. Je suis diplomé en informatique et en ingeniérie passionné par
+                            la programmation et la technologie.
+                            Planète Python est l'endroit où je me passionne pour la programmation informatique.
+                            Sur ce blog, je partage tout ce que j'apprends sur la programmation au fur et à mesure.
+                        </p>
+                        <a href=""><button type="button" class="btn btn-dark mx-auto d-block">En savoir plus</button></a>
+                    </div>
+                    <div class="col-12 col-md-12 mx-auto d-block">
+                        <p class="text-center text-uppercase text-white py-2 post-titre">Informations legales</p>
+                        <div class="col">
+                            <p>
+                                Planète Code est l'endroit où vous apprenez des compétences techniques et des compétences génerales pour devenir un meilleur programmeur.
+                                Ce site appartient et est exploité par Diarra Moustapha.
+                            </p>
+                        </div>
+                    </div>
+                    <hr>
+                </div>
+            </div>
+        </div>
+
+        </div>
+    </div>
+</section>
+
+{% endblock %}

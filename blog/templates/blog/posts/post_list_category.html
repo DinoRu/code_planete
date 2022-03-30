@@ -40,7 +40,7 @@
                                         {% if not forloop.last %}, {% endif %}
                                      {% endfor %}
                                  </p>
-                                <p class="text-secondary">Publié le {{ post.publish }} par {{ post.author }}</p>
+                                <p class="text-secondary">Publié le {{ post.publish.date }} par {{ post.author }}</p>
                                 <p>
                                     {{ post.body|safe|truncatewords_html:25 }}
                                 </p>
@@ -51,7 +51,7 @@
                 </div>
                 {% endfor %}
                 <hr/>
-                {% include "pagination.html" with page=posts %}
+                {% include "blog/posts/pagination.html" with page=posts%}
             </div>
             <div class="col-12 col-md-12 col-lg-4 ps-5 ">
                 <p class="text-center text-uppercase text-white py-2 post-titre">a propos de moi</p>

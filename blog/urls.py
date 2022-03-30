@@ -18,5 +18,5 @@ urlpatterns = [
     path('subscribe/', views.subscribe, name='subscribe'),
     path('<slug:category_slug>/', views.post_list_by_category, name='post_list_by_category'),
     path('<int:pk>/download_image/', views.download_idea_picture, name='download_book_image'),
-
+    path('comment/reply/', views.reply, name='reply'),
 ]

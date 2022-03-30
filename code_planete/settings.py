@@ -26,7 +26,7 @@ SECRET_KEY = config("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['192.99.246.6', 'planetecode.com']
+ALLOWED_HOSTS = ["192.99.246.6", ".planetecode.com"]
 
 
 # Application definition
@@ -46,6 +46,11 @@ INSTALLED_APPS = [
     'taggit',
     'ckeditor',
     'ckeditor_uploader',
+    'crispy_forms',
+    'pythonbasic',
+    'java',
+    'android',
+
 ]
 
 MIDDLEWARE = [
@@ -59,6 +64,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'code_planete.urls'
+
 
 TEMPLATES = [
     {
@@ -86,10 +92,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'Blog2',
-        'USER': 'postgres',
+        'USER': 'Dino',
         'PASSWORD': '',
-        'HOST': '',
-        'PORT': 5432
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
     }
 }
 
@@ -151,7 +157,7 @@ CKEDITOR_UPLOAD_PATH = "uploads/"
 CKEDITOR_CONFIGS = {
     'default': {
         'toolbar': 'Custom',
-        'height': 300,
+        'width': '100%',
         'toolbar_Custom': [
             ['Styles', 'Format', 'Font', 'FontSize', 'Bold', 'Italic', 'Underline', 'Strike', 'SpellChecker', 'Undo'],
             ['Link', 'Unlink', 'Anchor'],
@@ -167,9 +173,13 @@ CKEDITOR_CONFIGS = {
     },
     'special': {
         'toolbar': 'Special',
+        'width': '100%',
         'toolbar_Special': [
             ['Bold', 'CodeSnippet', 'BulletedList'],
         ],
         'extraPlugins': ','.join(['codesnippet', 'liststyle'])
     }
 }
+
+# Crispy-forms settings
+CRISPY_TEMPLATE_PACK = 'bootstrap4'

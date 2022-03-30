@@ -12,7 +12,7 @@
 
                     {% for post in results %}
                         <h3><a href="{{ post.get_absolute_url}}" class="text-center text-capitalize text-decoration-underline my-4 mx-auto d-block">{{ post.titre }}</a></h3>
-                        <p class="text-secondary text-center mx-auto d-block">Publié le {{ post.publish }} par <a href="{% url 'blog:about' %}" class="text-decoration-underline">{{ post.author }}</a></p>
+                        <p class="text-secondary text-center mx-auto d-block">Publié le {{ post.publish.date }} par <a href="{% url 'blog:about' %}" class="text-decoration-underline">{{ post.author }}</a></p>
                         <a href="{{post.get_absolute_url}}"><img src="{% if post.image%}{{post.image.url}}{% endif %}" alt="img" width="600" height="400" class="my-4 mx-auto d-block"></a>
                         {{post.body|safe|truncatewords_html:25}}
                         <p>Post in <a href="{% url 'blog:post_list_by_category' post.category.slug %}" class="text-decoration-underline fst-italic">{{ post.category }}

@@ -4,17 +4,17 @@
 
 {% block content %}
 
+
 <!-- main -->
 <section id="main" class="hero py-5 d-flex align-items-center">
     <div class="container-fluid">
         <div class="row gy-4 align-items-center justify-content-center">
-            <a href="#">
+            <a href="{% url 'blog:post_list' %}">
             <div id="carousel_id" class="col col-md-12 col-lg-12 text-white text-center">
-                <h1 class="fw-bold p-5" data-aos="fade-up" ata-aos-delay="400">Vous voulez devenir programmeur informatique ?</h1>
-                <div data-aos="fade-up" data-aos-delay="600">
-                     <a href="" class="btn btn-get-started px-5 py-2 text-uppercase d-inline-flex align-items-center justify-content-center align-self-center">
-                         <span class="p-4 align-self-center">Commencer ici</span>
-                         <i class="bi bi-arrow-right"></i>
+                <h2 class="fw-bold p-3 text-white" data-aos="fade-up" ata-aos-delay="400">Vous voulez devenir programmeur informatique ?</h2>
+                <div data-aos="fade-up" data-aos-delay="600" class="col col-md-12">
+                     <a href="{% url 'blog:post_list' %}" class="btn btn-get-started px-5 py-2 text-uppercase d-inline-flex align-items-center justify-content-center align-self-center">
+                         <span class="p-4 mt-1 text-uppercase ">Commencer ici</span>
                      </a>
                 </div>
             </div>
@@ -22,6 +22,8 @@
         </div>
     </div>
 </section>
+
+
 <!-- Section card -->
 <section id="pricing" class="pricing">
     <div class="container-fluid" data-aos="fade-up">
@@ -30,7 +32,7 @@
                 <div class="card text-center box">
                     <img src="{% static 'img/python.jpeg' %}" width="100%" height="200px" alt="card-1"/>
                      <div class="card-footer py-2">
-                        <a href="" class="text-uppercase bg-transparent">Python basics</a>
+                        <a href="{% url 'pythonbasic:home' %}" class="text-uppercase bg-transparent text-black fw-bold fs-3">Python basics</a>
                      </div>
                 </div>
             </div>
@@ -38,7 +40,7 @@
                 <div class="card text-center box">
                     <img src="{% static 'img/java.jpg' %}" width="100%" height="200px" alt="card-1"/>
                     <div class="card-footer py-2">
-                        <a href="" class="text-uppercase p-4">Java basics</a>
+                        <a href="{% url 'java:java-home' %}" class="text-uppercase fw-bold fs-3 text-black p-4">Java basics</a>
                     </div>
                 </div>
             </div>
@@ -46,13 +48,14 @@
                 <div class="card text-center box">
                     <img src="{% static 'img/android_1.jpeg' %}" width="100%" height="200px" alt="card-1"/>
                      <div class="card-footer py-2">
-                        <a href="" class="text-uppercase">Android basics</a>
+                        <a href="{% url 'android:android-home' %}" class="text-uppercase fw-bold fs-3 text-black p-4">Android basics</a>
                      </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
+
 <!-- Section posts -->
 <section class="bg-light py-5">
     <div class="container-fluid">
@@ -91,7 +94,7 @@
                                         {% if not forloop.last %}, {% endif %}
                                      {% endfor %}
                                  </p>
-                                <p class="text-secondary">Publié le {{ post.publish }} par {{ post.author }}</p>
+                                <p class="text-secondary">Publié le {{ post.publish.date }} par {{ post.author }}</p>
                                 <p>
                                     {{ post.body|safe|truncatewords_html:25 }}
                                 </p>

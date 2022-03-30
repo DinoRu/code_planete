@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from blog.models import Post, Comment, Category, Book
+from blog.models import Post, Comment, Category, Book, Subscribe
 
 
 @admin.register(Category)
@@ -23,8 +23,8 @@ class PostAdmin(admin.ModelAdmin):
 
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ('name', 'email', 'post', 'created', 'active')
-    list_filter = ('active', 'created', 'updated')
+    list_display = ('name', 'email', 'post', 'created')
+    list_filter = ('created', 'updated')
     search_fields = ('name', 'email', 'body')
 
 
@@ -32,3 +32,8 @@ class CommentAdmin(admin.ModelAdmin):
 class BookAdmin(admin.ModelAdmin):
     list_display = ['title', 'author']
     list_filter = ['title']
+
+
+@admin.register(Subscribe)
+class Subscribe(admin.ModelAdmin):
+    list_display = ['email']
